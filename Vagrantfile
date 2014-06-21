@@ -3,31 +3,30 @@
 
 # This script will install hrpsys-base from ppa
 $script = <<SCRIPT
-HRPSYSBASE_INSTALLED=$(dpkg-query -l hrpsys-base | grep ^.i)
-if [ "" == "$HRPSYSBASE_INSTALLED" ]; then
-  apt-get update
-  apt-get install -y python-software-properties
-  add-apt-repository ppa:openrave/release
-  add-apt-repository ppa:hrg/stable
-  echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list
-  wget http://packages.ros.org/ros.key -O - | apt-key add -
-  apt-get update
-  apt-get install -y xorg fluxbox hrpsys-base python-pip virtualbox-guest-x11 git
-  pushd
-  cd /tmp
-  git clone https://github.com/gbiggs/rtctree.git
-  cd rtctree
-  python setup.py install
-  cd /tmp
-  git clone https://github.com/gbiggs/rtshell.git
-  cd rtshell
-  git checkout 626376622e75ebcd57113741596715b124a7aea1
-  echo "n" | python setup.py install
-  ln -s /usr/local/share/rtshell/shell_support /etc/profile.d/rtshell.sh
-  popd
-fi
+apt-get update
+apt-get install -y python-software-properties
+add-apt-repository ppa:openrave/release
+add-apt-repository ppa:hrg/stable
+echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list
+wget http://packages.ros.org/ros.key -O - | apt-key add -
+apt-get update
+apt-get install -y xorg fluxbox hrpsys-base python-pip virtualbox-guest-x11 git
+cd /tmp
+git clone https://github.com/gbiggs/rtctree.git
+cd rtctree
+python setup.py install
+cd /tmp
+git clone https://github.com/gbiggs/rtshell.git
+cd rtshell
+git checkout 626376622e75ebcd57113741596715b124a7aea1
+echo "n" | python setup.py install
+ln -s /usr/local/share/rtshell/shell_support /etc/profile.d/rtshell.sh
 echo "xhost +" > /etc/X11/Xsession.d/99localhost
-echo "export DISPLAY=:0.0" > /etc/profile.d/display.sh
+echo "if [ -z `pgrep xinit` ]
+then
+  sudo startx 2> /dev/null &
+fi
+export DISPLAY=:0.0" > /etc/profile.d/display.sh
 startx 2> /dev/null &
 SCRIPT
 
