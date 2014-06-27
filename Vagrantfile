@@ -5,12 +5,14 @@
 $script = <<SCRIPT
 apt-get update
 apt-get install -y python-software-properties
+add-apt-repository ppa:cassou/emacs
 add-apt-repository ppa:openrave/release
 add-apt-repository ppa:hrg/stable
 echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list
 wget http://packages.ros.org/ros.key -O - | apt-key add -
 apt-get update
-apt-get install -y xorg fluxbox hrpsys-base python-pip virtualbox-guest-x11 git
+apt-get install -y xorg fluxbox hrpsys-base python-pip virtualbox-guest-x11 git pkg-config g++ libomniorb4-dev uuid-dev libopencv-dev python-dev libyaml-dev supervisor
+pip install watchdog
 cd /tmp
 git clone https://github.com/gbiggs/rtctree.git
 cd rtctree
@@ -27,6 +29,13 @@ then
   sudo startx 2> /dev/null &
 fi
 export DISPLAY=:0.0" > /etc/profile.d/display.sh
+echo "[program:openhrp-model-loader]
+command=/usr/bin/openhrp-model-loader -ORBInitRef NameService=corbaloc:iiop:localhost:2809/NameService -ORBgiopMaxMsgSize 20971520
+user=vagrant
+autostart=true
+autorestart=true
+" > /etc/supervisor/conf.d/openhrp-model-loader.conf
+supervisorctl update
 startx 2> /dev/null &
 SCRIPT
 
