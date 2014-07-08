@@ -24,10 +24,7 @@ git checkout 626376622e75ebcd57113741596715b124a7aea1
 echo "n" | python setup.py install
 ln -s /usr/local/share/rtshell/shell_support /etc/profile.d/rtshell.sh
 echo "xhost +" > /etc/X11/Xsession.d/99localhost
-echo "if [ -z `pgrep xinit` ]
-then
-  sudo startx 2> /dev/null &
-fi
+echo "sudo startx 2> /dev/null &
 export DISPLAY=:0.0" > /etc/profile.d/display.sh
 echo "[program:openhrp-model-loader]
 command=/usr/bin/openhrp-model-loader -ORBInitRef NameService=corbaloc:iiop:localhost:2809/NameService -ORBgiopMaxMsgSize 20971520
