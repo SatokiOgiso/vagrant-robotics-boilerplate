@@ -18,15 +18,11 @@ apt-get update
 apt-get install -y xorg mesa-utils fluxbox openrtm-aist-dev omniorb-nameserver hrpsys-base choreonoid python-pip virtualbox-guest-x11 git pkg-config g++ libomniorb4-dev uuid-dev libopencv-dev python-dev libyaml-dev supervisor
 pip install watchdog
 cd /tmp
-git clone https://github.com/gbiggs/rtctree.git
-cd rtctree
-python setup.py install
+pip install rtctree
 cd /tmp
-git clone https://github.com/gbiggs/rtshell.git
-cd rtshell
-git checkout 626376622e75ebcd57113741596715b124a7aea1
-echo "n" | python setup.py install
-ln -s /usr/local/share/rtshell/shell_support /etc/profile.d/rtshell.sh
+pip install rtshell
+echo "y\ny\ny" | rtshell_post_install
+echo "export MANPATH=/usr/local/share/man:$MANPATH" >> /home/vagrant/.bashrc
 echo "#!/bin/sh -e
 startx 2> /dev/null &
 exit 0
